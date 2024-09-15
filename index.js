@@ -30,7 +30,7 @@ async function run() {
 
     // API endpoint to insert data into MongoDB
     app.post('/add-to-mongo', async (req, res) => {
-      const sheetData = req.body.data; // Data from Google Sheets or any other source
+      const sheetData = req.body.data; 
 
       try {
         const result = await collection.insertMany(sheetData); // Insert data into MongoDB
