@@ -23,8 +23,8 @@ async function run() {
         await client.connect();
 
         // Database and Collection
-        const db = client.db("Sample"); // Replace "Sample" with your actual database name
-        const collection = db.collection("Sample1"); // Replace "Sample1" with your actual collection name
+        const db = client.db("Sample"); 
+        const collection = db.collection("Sample1");
 
         console.log("Connected to MongoDB!");
 
@@ -54,7 +54,7 @@ async function run() {
                 console.log('User added:', userData);
 
                 // Notify Google Sheets to update
-                await fetch('https://script.google.com/macros/s/AKfycbxWuLjH_TBmuCoy55ILXHBSFC5GHyI52qRKHmu280Nq4MaWGXaKT0-Mp17LbQbaixDv/exec'); // Replace with your Google Apps Script Web App URL
+                await fetch('https://script.google.com/macros/s/AKfycbxWuLjH_TBmuCoy55ILXHBSFC5GHyI52qRKHmu280Nq4MaWGXaKT0-Mp17LbQbaixDv/exec'); 
                 console.log('Google Sheet update triggered');
             } catch (error) {
                 res.status(500).send('Error adding user');
