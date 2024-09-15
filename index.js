@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 const uri = "mongodb+srv://subhash613d:Subhash316d@cluster0.xuckj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 // Create a MongoClient with MongoClientOptions to set the Stable API version
-const client = new MongoClient(uri,  {
+const client = new MongoClient(uri, {
     serverApi: {
         version: ServerApiVersion.v1,
         strict: true,
@@ -18,51 +18,55 @@ const client = new MongoClient(uri,  {
 });
 
 async function run() {
-  try {
-    // Connect the client to the MongoDB server
-    await client.connect();
+    try {
+        // Connect the client to the MongoDB server
+        await client.connect();
 
-    // Database and Collection
-    const db = client.db("Sample"); // Replace "Sample" with your actual database name
-    const collection = db.collection("Sample1"); // Replace "Sample1" with your actual collection name
+        // Database and Collection
+        const db = client.db("Sample"); // Replace "Sample" with your actual database name
+        const collection = db.collection("Sample1"); // Replace "Sample1" with your actual collection name
 
-    console.log("Connected to MongoDB!");
+        console.log("Connected to MongoDB!");
 
-    // API endpoint to insert data into MongoDB
-    app.post('/add-to-mongo', async (req, res) => {
-      const sheetData = req.body.data; 
+        // API endpoint to replace old data with new data in MongoDB
+        app.post('/add-to-mongo', async (req, res) => {
+            const sheetData = req.body.data; 
 
-      try {
-        const result = await collection.insertMany(sheetData); // Insert data into MongoDB
-        res.status(200).send('Data inserted successfully');
-        console.log('Data inserted:', result);
-      } catch (error) {
-        res.status(500).send('Error inserting data');
-        console.error('Error inserting data:', error);
-      }
-    });
+            try {
+                // Remove all existing data from the collection
+                await collection.deleteMany({}); 
 
-    // API endpoint to fetch all data from the MongoDB collection
-    app.get('/get-data', async (req, res) => {
-      try {
-        const data = await collection.find({}).toArray(); // Fetch all data
-        res.status(200).json(data);
-        console.log('Data fetched:', data);
-      } catch (error) {
-        res.status(500).send('Error fetching data');
-        console.error('Error fetching data:', error);
-      }
-    });
+                // Insert new data into MongoDB
+                const result = await collection.insertMany(sheetData); 
+                res.status(200).send('Data inserted successfully');
+                console.log('Data inserted:', result);
+            } catch (error) {
+                res.status(500).send('Error inserting data');
+                console.error('Error inserting data:', error);
+            }
+        });
 
-    // Start the Express server
-    const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
+        // API endpoint to fetch all data from the MongoDB collection
+        app.get('/get-data', async (req, res) => {
+            try {
+                const data = await collection.find({}).toArray(); // Fetch all data
+                res.status(200).json(data);
+                console.log('Data fetched:', data);
+            } catch (error) {
+                res.status(500).send('Error fetching data');
+                console.error('Error fetching data:', error);
+            }
+        });
 
-  } catch (err) {
-    console.error(err);
-  }
+        // Start the Express server
+        const PORT = process.env.PORT || 3000;
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
+
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 run().catch(console.dir);
