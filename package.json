@@ -1,0 +1,16 @@
+{
+  "name": "live-synchronisation-between-db-and-google-sheet",
+  "version": "1.0.0",
+  "description": "It will synchronise the ata between googlee sheet and my sql db",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "Subhash",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "express": "^4.21.0",
+    "mongodb": "^6.9.0"
+  }
+}
