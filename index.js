@@ -45,7 +45,22 @@ async function run() {
                 console.error('Error inserting data:', error);
             }
         });
+         app.post('/add-user', async (req, res) => {
+            const userData = req.body; // User data to be added
 
+            try {
+                await collection.insertOne(userData); // Add the new user
+                res.status(200).send('User added successfully');
+                console.log('User added:', userData);
+
+                // Notify Google Sheets to update
+                await fetch('https://script.google.com/macros/s/AKfycbxWuLjH_TBmuCoy55ILXHBSFC5GHyI52qRKHmu280Nq4MaWGXaKT0-Mp17LbQbaixDv/exec'); // Replace with your Google Apps Script Web App URL
+                console.log('Google Sheet update triggered');
+            } catch (error) {
+                res.status(500).send('Error adding user');
+                console.error('Error adding user:', error);
+            }
+        });
         // API endpoint to fetch all data from the MongoDB collection
         app.get('/get-data', async (req, res) => {
             try {
