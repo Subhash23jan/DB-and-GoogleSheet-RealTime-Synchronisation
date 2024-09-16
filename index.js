@@ -35,7 +35,6 @@ async function run() {
             try {
                 // Remove all existing data from the collection
                 await collection.deleteMany({}); 
-
                 // Insert new data into MongoDB
                 const result = await collection.insertMany(sheetData); 
                 res.status(200).send('Data inserted successfully');
